@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la *.md)",
+      "Skill(sp.phr)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Update Project Constitution\" --stage constitution --json)",
+      "Bash(git fetch --all --prune)",
+      "Bash(ls -d specs/*-frontend-chat-session)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Create Frontend Chat Session Spec\" --stage spec --feature \"001-frontend-chat-session\" --json)",
+      "Bash(ls -d specs/*-ai-agent)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Create AI Agent Spec\" --stage spec --feature \"002-ai-agent\" --json)",
+      "Bash(ls -d specs/*-mcp-task-tools)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Create MCP Task Tools Spec\" --stage spec --feature \"003-mcp-task-tools\" --json)",
+      "Bash(.specify/scripts/bash/setup-plan.sh --json)",
+      "Bash(.specify/scripts/bash/update-agent-context.sh claude)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Implementation Plan\" --stage plan --feature \"004-frontend-impl\" --json)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Tasks Generation\" --stage tasks --feature \"004-frontend-impl\" --json)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --paths-only)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Spec Clarification\" --stage spec --feature \"001-frontend-chat-session\" --json)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks)",
+      "Bash(git rev-parse --git-dir)",
+      "Bash(npm install @openai/chatkit better-auth)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Implementation Complete\" --stage green --feature \"004-frontend-impl\" --json)"
+    ]
+  }
+}
