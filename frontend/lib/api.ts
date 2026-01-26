@@ -60,8 +60,16 @@ export async function sendChatMessage(
       });
 
       if (!response.ok) {
-        const error: ErrorResponse = await response.json();
-        throw new Error(error.message || `HTTP error! status: ${response.status}`);
+        // Check if the response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const error: ErrorResponse = await response.json();
+          throw new Error(error.message || `HTTP error! status: ${response.status}`);
+        } else {
+          // If not JSON, create a generic error message
+          const text = await response.text();
+          throw new Error(`HTTP error! status: ${response.status}, message: ${text.substring(0, 100)}...`);
+        }
       }
 
       const data: ChatResponsePayload = await response.json();

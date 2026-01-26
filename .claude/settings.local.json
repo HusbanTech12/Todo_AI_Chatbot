@@ -21,7 +21,15 @@
       "Bash(.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks)",
       "Bash(git rev-parse --git-dir)",
       "Bash(npm install @openai/chatkit better-auth)",
-      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Implementation Complete\" --stage green --feature \"004-frontend-impl\" --json)"
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Frontend Implementation Complete\" --stage green --feature \"004-frontend-impl\" --json)",
+      "Bash(npm install)",
+      "Bash(npm ci)",
+      "Bash(npm run dev)",
+      "Bash(./node_modules/.bin/next --version)",
+      "Bash(npm run build)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f next-server)",
+      "Bash(kill 2336 2922 2934 2921 2305)"
     ]
   }
 }
