@@ -8,18 +8,18 @@ const MessageBubble = ({ role, content, timestamp }: MessageBubbleProps) => {
   const isUser = role === 'user';
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`}>
       <div
-        className={`max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl px-4 py-2 rounded-lg ${
+        className={`max-w-[85%] md:max-w-[75%] px-5 py-3 rounded-2xl ${
           isUser
-            ? 'bg-blue-500 text-white rounded-br-none'
-            : 'bg-gray-200 text-gray-800 rounded-bl-none'
+            ? 'bg-primary text-primary-foreground rounded-br-none shadow-md'
+            : 'bg-secondary text-secondary-foreground rounded-bl-none shadow-sm'
         }`}
       >
-        <div className="whitespace-pre-wrap">{content}</div>
+        <div className="whitespace-pre-wrap break-words">{content}</div>
         <div
-          className={`text-xs mt-1 ${
-            isUser ? 'text-blue-200' : 'text-gray-500'
+          className={`text-xs mt-2 opacity-70 ${
+            isUser ? 'text-primary-foreground/80' : 'text-secondary-foreground/80'
           }`}
         >
           {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

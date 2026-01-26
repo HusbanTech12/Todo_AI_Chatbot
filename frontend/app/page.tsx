@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import ChatContainer from '@/components/ChatContainer';
+import AuthButton from '@/components/AuthButton';
+import { ThemeSelector } from '@/components/ThemeSelector';
 
 export default function ChatPage() {
   const [initialConversationId, setInitialConversationId] = useState<number | null>(null);
@@ -23,11 +25,17 @@ export default function ChatPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      <header className="bg-white shadow-sm p-4">
-        <h1 className="text-xl font-semibold text-gray-800">Todo AI Chatbot</h1>
+    <div className="flex flex-col h-screen bg-background">
+      <header className="bg-card border-b border-border p-4 shadow-sm">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-foreground">Todo AI Chatbot</h1>
+          <div className="flex items-center space-x-4">
+            <ThemeSelector />
+            <AuthButton />
+          </div>
+        </div>
       </header>
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden bg-background">
         <ChatContainer initialConversationId={initialConversationId} />
       </main>
     </div>

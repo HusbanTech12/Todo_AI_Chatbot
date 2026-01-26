@@ -29,7 +29,11 @@
       "Bash(npm run build)",
       "Bash(pkill -f \"next dev\")",
       "Bash(pkill -f next-server)",
-      "Bash(kill 2336 2922 2934 2921 2305)"
+      "Bash(kill 2336 2922 2934 2921 2305)",
+      "Bash(timeout 10s cat /tmp/claude/-mnt-d-Quarter-4-Hackathon-2-Todo-AI-Chatbot/tasks/b9a435b.output)",
+      "Bash(npx next build)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc --noEmit --project ./tsconfig.json)"
     ]
   }
 }

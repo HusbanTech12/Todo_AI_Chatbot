@@ -1,26 +1,212 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --primary: #0f70b7;
+  --primary-foreground: #f8fafc;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #1e293b;
+  --accent: #f1f5f9;
+  --accent-foreground: #1e293b;
+  --destructive: #dc2626;
+  --destructive-foreground: #f8fafc;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #0f70b7;
+  --radius: 0.5rem;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --info: #3b82f6;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --radius: var(--radius);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #e2e8f0;
+    --card: #1e293b;
+    --card-foreground: #e2e8f0;
+    --primary: #38bdf8;
+    --primary-foreground: #0f172a;
+    --secondary: #334155;
+    --secondary-foreground: #e2e8f0;
+    --accent: #1e293b;
+    --accent-foreground: #e2e8f0;
+    --destructive: #dc2626;
+    --destructive-foreground: #f8fafc;
+    --border: #334155;
+    --input: #334155;
+    --ring: #38bdf8;
+    --muted: #334155;
+    --muted-foreground: #94a3b8;
+    --success: #059669;
+    --warning: #d97706;
+    --info: #60a5fa;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Professional Theme Enhancements */
+.prose {
+  @apply max-w-none;
+}
+
+.shadow-xs {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.transition-all {
+  transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+.transition-colors {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-ring-inset) 0 0 0 0 var(--tw-ring-color);
+}
+
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+
+.font-thin { font-weight: 100; }
+.font-extralight { font-weight: 200; }
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-extrabold { font-weight: 800; }
+.font-black { font-weight: 900; }
+
+/* Professional gradients */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--primary), #1d4ed8);
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+}
+
+/* Professional button styles */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background;
+}
+
+.btn-primary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+}
+
+.btn-outline {
+  @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+}
+
+.btn-ghost {
+  @apply hover:bg-accent hover:text-accent-foreground;
+}
+
+.btn-link {
+  @apply text-primary underline-offset-4 hover:underline;
+}
+
+/* Professional card styles */
+.card {
+  @apply rounded-xl border bg-card text-card-foreground shadow;
+}
+
+.card-header {
+  @apply flex flex-col space-y-1.5 p-6;
+}
+
+.card-title {
+  @apply text-lg font-semibold leading-none tracking-tight;
+}
+
+.card-description {
+  @apply text-sm text-muted-foreground;
+}
+
+.card-content {
+  @apply p-6 pt-0;
+}
+
+.card-footer {
+  @apply flex items-center p-6 pt-0;
+}
+
+/* Professional input styles */
+.input {
+  @apply flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+/* Professional textarea styles */
+.textarea {
+  @apply flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
 }

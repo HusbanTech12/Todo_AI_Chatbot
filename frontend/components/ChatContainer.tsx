@@ -5,6 +5,7 @@ import { ChatSession, Message, sendChatMessage, handleApiError } from '../lib/ap
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import ErrorBanner from './ErrorBanner';
+import TypingIndicator from './TypingIndicator';
 
 interface ChatContainerProps {
   initialConversationId?: number;
@@ -106,9 +107,10 @@ const ChatContainer = ({ initialConversationId }: ChatContainerProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto">
+    <div className="flex flex-col h-full max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden flex-1 m-4">
       {chatSession.error && <ErrorBanner message={chatSession.error} />}
       <MessageList messages={chatSession.messages} />
+      <TypingIndicator isVisible={chatSession.isLoading && chatSession.messages.length > 0} />
       <ChatInput
         value={inputValue}
         onChange={handleInputChange}
