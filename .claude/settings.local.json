@@ -33,7 +33,12 @@
       "Bash(timeout 10s cat /tmp/claude/-mnt-d-Quarter-4-Hackathon-2-Todo-AI-Chatbot/tasks/b9a435b.output)",
       "Bash(npx next build)",
       "Bash(npx tsc --noEmit)",
-      "Bash(npx tsc --noEmit --project ./tsconfig.json)"
+      "Bash(npx tsc --noEmit --project ./tsconfig.json)",
+      "Bash(grep -E ^[0-9]+-todo-backend)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Create Backend Spec\" --stage spec --feature \"todo-backend\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Create Backend Spec\" --stage spec --feature \"001-todo-backend\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Plan Backend Architecture\" --stage plan --feature \"001-todo-backend\" --json)",
+      "Bash(.specify/scripts/bash/create-phr.sh --title \"Generate Implementation Tasks\" --stage tasks --feature \"001-todo-backend\" --json)"
     ]
   }
 }

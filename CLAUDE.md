@@ -212,6 +212,8 @@ See `.specify/memory/constitution.md` for code quality, testing, performance, se
 ## Active Technologies
 - TypeScript with Next.js App Router + Next.js, OpenAI ChatKit, Better Auth, Tailwind CSS (004-frontend-impl)
 - None (UI-only state) (004-frontend-impl)
+- Python 3.11 + FastAPI, SQLModel, asyncpg, openai-agents-sdk, official-mcp-sdk, better-auth (001-todo-backend)
+- PostgreSQL (Neon Serverless) (001-todo-backend)
 
 ## Recent Changes
 - 004-frontend-impl: Added TypeScript with Next.js App Router + Next.js, OpenAI ChatKit, Better Auth, Tailwind CSS
