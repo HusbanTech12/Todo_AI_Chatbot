@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: Todo AI Chatbot Backend API
+  version: 1.0.0
+  description: API for the Todo AI Chatbot Backend
+
+paths:
+  /api/{user_id}/chat:
+    post:
+      summary: Process a chat message and return AI response
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the authenticated user
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                conversation_id:
+                  type: integer
+                  description: Existing conversation ID or null for new conversation
+                message:
+                  type: string
+                  description: User input message
+              required:
+                - message
+      responses:
+        '200':
+          description: AI response to the user message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversation_id:
+                    type: integer
+                    description: The active conversation ID
+                  response:
+                    type: string
+                    description: AI assistant's response message
+                  tool_calls:
+                    type: array
+                    items:
+                      type: string
+                    description: List of MCP tools invoked during processing
+                required:
+                  - conversation_id
+                  - response
+                  - tool_calls
+        '401':
+          description: Unauthorized - invalid or missing authentication
+        '403':
+          description: Forbidden - user does not have access to this resource
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      properties:
+        conversation_id:
+          type: integer
+          description: Existing conversation ID or null for new conversation
+        message:
+          type: string
+          description: User input message
+      required:
+        - message
+
+    ChatResponse:
+      type: object
+      properties:
+        conversation_id:
+          type: integer
+          description: The active conversation ID
+        response:
+          type: string
+          description: AI assistant's response message
+        tool_calls:
+          type: array
+          items:
+            type: string
+          description: List of MCP tools invoked during processing
+      required:
+        - conversation_id
+        - response
+        - tool_calls

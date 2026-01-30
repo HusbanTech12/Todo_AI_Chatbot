@@ -1,0 +1,264 @@
+openapi: 3.0.0
+info:
+  title: Todo AI Chatbot MCP Tools API
+  version: 1.0.0
+  description: MCP Tool contracts for Todo AI Chatbot Backend
+
+paths:
+  /mcp/add_task:
+    post:
+      summary: Add a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTaskInput'
+      responses:
+        '200':
+          description: Task added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddTaskOutput'
+
+  /mcp/list_tasks:
+    post:
+      summary: List tasks with optional filtering
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListTasksInput'
+      responses:
+        '200':
+          description: Tasks retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTasksOutput'
+
+  /mcp/complete_task:
+    post:
+      summary: Mark a task as complete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteTaskInput'
+      responses:
+        '200':
+          description: Task completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteTaskOutput'
+
+  /mcp/delete_task:
+    post:
+      summary: Delete a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTaskInput'
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteTaskOutput'
+
+  /mcp/update_task:
+    post:
+      summary: Update a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskInput'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateTaskOutput'
+
+components:
+  schemas:
+    AddTaskInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: The ID of the user
+        title:
+          type: string
+          description: Title of the task (1-255 characters)
+        description:
+          type: string
+          description: Optional description of the task (max 1000 characters)
+      required:
+        - user_id
+        - title
+
+    AddTaskOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+        task_id:
+          type: integer
+          description: ID of the created task
+        message:
+          type: string
+          description: Confirmation message
+      required:
+        - success
+        - task_id
+        - message
+
+    ListTasksInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: The ID of the user
+        status:
+          type: string
+          enum: [pending, completed, all]
+          description: Filter tasks by status (default: all)
+      required:
+        - user_id
+
+    ListTasksOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              description:
+                type: string
+              completed:
+                type: boolean
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+            required:
+              - id
+              - title
+              - completed
+              - created_at
+              - updated_at
+        message:
+          type: string
+          description: Status message
+      required:
+        - success
+        - tasks
+
+    CompleteTaskInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: The ID of the user
+        task_id:
+          type: integer
+          description: ID of the task to complete
+      required:
+        - user_id
+        - task_id
+
+    CompleteTaskOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+        message:
+          type: string
+          description: Confirmation message
+      required:
+        - success
+        - message
+
+    DeleteTaskInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: The ID of the user
+        task_id:
+          type: integer
+          description: ID of the task to delete
+      required:
+        - user_id
+        - task_id
+
+    DeleteTaskOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+        message:
+          type: string
+          description: Confirmation message
+      required:
+        - success
+        - message
+
+    UpdateTaskInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: The ID of the user
+        task_id:
+          type: integer
+          description: ID of the task to update
+        title:
+          type: string
+          description: New title for the task (optional)
+        description:
+          type: string
+          description: New description for the task (optional)
+        completed:
+          type: boolean
+          description: New completion status (optional)
+      required:
+        - user_id
+        - task_id
+
+    UpdateTaskOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+        message:
+          type: string
+          description: Confirmation message
+      required:
+        - success
+        - message
