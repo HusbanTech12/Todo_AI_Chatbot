@@ -1,73 +1,43 @@
 # Implementation Plan: Todo AI Chatbot Backend
 
-**Branch**: `005-todo-backend` | **Date**: 2026-01-31 | **Spec**: [specs/005-todo-backend/spec.md](specs/005-todo-backend/spec.md)
+**Branch**: `005-todo-backend` | **Date**: 2026-02-02 | **Spec**: [specs/005-todo-backend/spec.md](../../specs/005-todo-backend/spec.md)
 **Input**: Feature specification from `/specs/005-todo-backend/spec.md`
 
 **Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-Build a stateless FastAPI backend that orchestrates AI conversations with the OpenAI Agents SDK, integrates MCP tools for all database operations, and persists all state in PostgreSQL. The backend must follow constitutional requirements for statelessness and proper separation of responsibilities between layers.
+Implement a stateless, scalable FastAPI backend that orchestrates AI conversations using OpenAI Agents SDK, exposes MCP tools for task operations, and persists all state in PostgreSQL. The backend follows a strict stateless execution model where every request reconstructs conversation context from the database, executes the AI agent with MCP tools, and persists responses before discarding in-memory data.
 
 ## Technical Context
 
 **Language/Version**: Python 3.11
-**Primary Dependencies**: FastAPI, OpenAI Agents SDK, Official MCP SDK, SQLModel, Neon Serverless PostgreSQL, Better Auth
-**Storage**: Neon Serverless PostgreSQL database with SQLModel ORM
-**Testing**: pytest for backend testing, contract testing for MCP tool interfaces
-**Target Platform**: Linux server (cloud deployment)
-**Project Type**: web - backend service for AI chatbot
-**Performance Goals**: <3 second response time for 90% of requests, support 1000 concurrent users
-**Constraints**: Must maintain stateless operation (no in-memory session storage), all state must be in database, MCP tools must be the only way to mutate task data
-**Scale/Scope**: Support thousands of users with persistent conversations, horizontally scalable architecture
+**Primary Dependencies**: fastapi, uvicorn, sqlmodel, openai-agents-sdk, official-mcp-sdk, asyncpg, better-auth
+**Storage**: PostgreSQL (Neon Serverless) accessed via SQLModel ORM
+**Testing**: pytest with integration and unit tests
+**Target Platform**: Linux server environment (cloud deployment ready)
+**Project Type**: Web application backend service
+**Performance Goals**: <3 second response time for 90% of requests, support 1000+ concurrent users
+**Constraints**: <200ms p95 for database operations, stateless operation (no session storage), secure authentication
+**Scale/Scope**: Support 10k+ users with persistent conversations and task management
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*GATE: Must pass before Phase 0 research. Re-checked after Phase 1 design.*
 
-### Statelessness Compliance
-- ✓ Backend must NOT store session/conversation/task state in memory
-- ✓ AI agent must NOT rely on in-process memory
-- ✓ All state must be persisted in database
-- ✓ Every request must be independently executable
+**Statelessness Compliance**: ✅ Confirmed - Backend must not store session/conversation/task state in memory, all state persisted in database
+**Database Authority**: ✅ Confirmed - PostgreSQL (Neon) is single source of truth, all state retrieved from DB
+**Tool-Only Task Manipulation**: ✅ Confirmed - AI agents must not access DB directly, all task ops via MCP tools
+**Separation of Responsibilities**: ✅ Confirmed - Clear separation: Frontend(UI), FastAPI(orchestration), Agent(intent), MCP(tools), DB(persistence)
+**Technology Constitution**: ✅ Confirmed - Using mandated stack: FastAPI, OpenAI Agents SDK, MCP SDK, SQLModel, Neon PG, Better Auth
+**Natural Language Authority**: ✅ Confirmed - System must understand natural commands like "Add task to buy groceries"
+**Forbidden Actions Check**: ✅ Confirmed - No memory storage, no direct DB access by agents, no skipping MCP tools
 
-### Database Authority Compliance
-- ✓ PostgreSQL (Neon) is the only source of truth
-- ✓ Agents never infer state beyond what's retrieved from database
-- ✓ Server restarts must not affect correctness or continuity
-
-### Tool-Only Task Manipulation Compliance
-- ✓ AI agents must NOT access database directly
-- ✓ All task operations must go through MCP tools
-- ✓ MCP tools are the only layer allowed to mutate task data
-
-### Responsibility Separation Compliance
-- ✓ Frontend: UI and message transport only
-- ✓ FastAPI Chat Endpoint: Orchestration and persistence
-- ✓ OpenAI Agent: Intent recognition and tool selection
-- ✓ MCP Server: Business logic for task operations
-- ✓ Database: Persistent state
-
-### Technology Stack Compliance
-- ✓ Backend: Python FastAPI
-- ✓ AI Framework: OpenAI Agents SDK
-- ✓ MCP Server: Official MCP SDK
-- ✓ ORM: SQLModel
-- ✓ Database: Neon Serverless PostgreSQL
-- ✓ Authentication: Better Auth
-- ✓ No substitutions permitted
-
-### Natural Language Authority Compliance
-- ✓ System must understand natural language commands
-- ✓ Natural language is the primary interface, not IDs or forms
-
-### MCP Tool Authority Compliance
-- ✓ MCP server is the only authority for task mutation
-- ✓ Required tools exist: add_task, list_tasks, complete_task, delete_task, update_task
-- ✓ MCP tool schemas must not change
-
-### Conversation Flow Compliance
-- ✓ Every request follows stateless cycle: receive → fetch history → build agent context → persist user message → run agent → MCP tools mutate DB → persist assistant response → return response → discard memory
+**Post-Design Verification**:
+- Data models comply with constitutional requirements (Task, Conversation, Message entities)
+- API contracts follow constitutional patterns (chat endpoint structure)
+- MCP tool contracts enforce proper separation of concerns
+- Stateless execution flow documented and verified
 
 ## Project Structure
 
@@ -86,25 +56,28 @@ specs/005-todo-backend/
 ### Source Code (repository root)
 
 ```text
-/backend
+backend_site/
+├── app/
+│   └── main.py
 ├── api/
-│   └── chat.py          # Chat orchestration endpoint
+│   └── chat.py
 ├── agents/
-│   └── todo_agent.py    # AI agent definition and configuration
+│   └── todo_agent.py
 ├── mcp/
-│   └── tools.py         # MCP tools implementation
+│   └── tools.py
 ├── models/
-│   ├── task.py          # Task model
-│   ├── conversation.py  # Conversation model
-│   └── message.py       # Message model
+│   ├── task.py
+│   ├── conversation.py
+│   └── message.py
 ├── db/
-│   └── session.py       # Database session management
+│   └── session.py
 ├── auth/
-│   └── middleware.py    # Better Auth integration
-└── main.py              # FastAPI application entry point
+│   └── middleware.py
+├── requirements.txt
+└── pyproject.toml
 ```
 
-**Structure Decision**: Web application backend structure selected based on feature requirements for FastAPI backend with AI agent integration, MCP tools, and PostgreSQL database.
+**Structure Decision**: Web application backend service with FastAPI as the web framework, following the mandated architecture from the specification. The backend integrates with OpenAI Agents SDK and MCP tools for AI functionality while maintaining statelessness through database persistence.
 
 ## Complexity Tracking
 
@@ -112,4 +85,3 @@ specs/005-todo-backend/
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| N/A | N/A | N/A |

@@ -58,7 +58,26 @@
       "Bash(timeout 10s python3 -c \"\nimport sys\nsys.path.insert\\(0, ''.''\\)\nfrom main import app\nimport uvicorn\nprint\\(''Starting server on port 8000...''\\)\ntry:\n    uvicorn.run\\(app, host=''0.0.0.0'', port=8000, log_level=''info''\\)\nexcept Exception as e:\n    print\\(f''Error starting server: {e}''\\)\n    import traceback\n    traceback.print_exc\\(\\)\n\")",
       "Bash(curl -s http://localhost:8080/)",
       "Bash(killall -9 python3)",
-      "Bash(curl -s http://localhost:8000/docs)"
+      "Bash(curl -s http://localhost:8000/docs)",
+      "Bash(tree backend_site/app/)",
+      "Bash(uvicorn app.main:app --reload)",
+      "Bash(uvicorn app.main:app --host 0.0.0.0 --port 8000)",
+      "Bash(curl -X POST \"http://localhost:8000/api/testuser/chat\" -H \"Content-Type: application/json\" -d '{\"\"message\"\": \"\"add a task to buy groceries\"\"}')",
+      "Bash(python3 integration_test.py)",
+      "Bash(curl -X POST \"http://localhost:8000/api/current-user-id/chat\" -H \"Content-Type: application/json\" -d '{\"\"\"\"conversation_id\"\"\"\": 1, \"\"\"\"message\"\"\"\": \"\"\"\"add a new task\"\"\"\"}')",
+      "Bash(python3 -m json.tool)",
+      "Bash(pkill -f \"node\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:8000/\")",
+      "Bash(curl -X POST \"http://localhost:8000/api/testuser/chat\" -H \"Content-Type: application/json\" -d '{\"\"message\"\": \"\"test message\"\"}')",
+      "Bash(pkill -f \"next\")",
+      "Bash(pkill -f \"npm\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -X POST \"http://localhost:3000/api/testuser/chat\" -H \"Content-Type: application/json\" -d '{\"\"message\"\": \"\"test message from frontend proxy\"\"}' -v)",
+      "Bash(curl -X POST \"http://localhost:8000/api/testuser/chat\" -H \"Content-Type: application/json\" -d '{\"\"message\"\": \"\"direct backend test\"\"}')",
+      "Bash(curl -X POST \"http://localhost:3000/api/testuser/chat\" -H \"Content-Type: application/json\" -d '{\"\"\"\"message\"\"\"\": \"\"\"\"test proxy route\"\"\"\"}' -s)",
+      "Bash(curl -s \"http://localhost:3000/api/test\")",
+      "Bash(pkill -f \"uvicorn\")",
+      "Bash(curl -X POST \"http://localhost:3000\" -H \"Content-Type: application/json\" --max-time 10 -s -o /dev/null -w \"Frontend status: %{http_code}\\\\n\")"
     ]
   }
 }
