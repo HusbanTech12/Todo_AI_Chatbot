@@ -18,7 +18,7 @@ interface ErrorResponse {
 }
 
 export interface ChatSession {
-  conversation_id: number | null;
+  conversation_id: number | undefined;
   messages: Message[];
   isLoading: boolean;
   error: string | null;

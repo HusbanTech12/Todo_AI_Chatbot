@@ -1,10 +1,10 @@
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest, { params }: { params: { userId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   try {
     // Extract the userId from the URL parameters
-    const { userId } = params;
+    const { userId } = await params;
 
     // Get the request body
     const body = await request.json();

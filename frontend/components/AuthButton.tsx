@@ -14,10 +14,10 @@ const AuthButton = ({ onUserChange }: AuthButtonProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const currentUser = await authClient.getCurrentUser();
-        setUser(currentUser?.user || null);
+        const currentUser = await authClient.getSession();
+        setUser(currentUser?.data?.user || null);
         if (onUserChange) {
-          onUserChange(currentUser?.user || null);
+          onUserChange(currentUser?.data?.user || null);
         }
       } catch (error) {
         console.error('Error checking auth:', error);
@@ -32,18 +32,8 @@ const AuthButton = ({ onUserChange }: AuthButtonProps) => {
 
     checkAuth();
 
-    // Set up subscription to auth state changes
-    const unsub = authClient.onSessionChange(async () => {
-      const currentUser = await authClient.getCurrentUser();
-      setUser(currentUser?.user || null);
-      if (onUserChange) {
-        onUserChange(currentUser?.user || null);
-      }
-    });
-
-    return () => {
-      if (unsub) unsub();
-    };
+    // Note: Better Auth handles session changes automatically with useSession hook
+    // Additional manual subscription is not needed
   }, [onUserChange]);
 
   const handleSignIn = async () => {

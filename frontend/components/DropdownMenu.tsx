@@ -33,10 +33,10 @@ export function DropdownMenu({ children, trigger, align = 'end' }: DropdownMenuP
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {React.cloneElement(trigger, {
+      {React.cloneElement(trigger as React.ReactElement<any>, {
         onClick: () => setOpen(!open),
         'aria-expanded': open,
-        className: `${trigger.props.className || ''} ${open ? 'bg-accent' : ''}`
+        className: `${(trigger.props as any).className || ''} ${open ? 'bg-accent' : ''}`
       })}
 
       {open && (
@@ -50,16 +50,17 @@ export function DropdownMenu({ children, trigger, align = 'end' }: DropdownMenuP
   );
 }
 
-export function DropdownMenuItem({ children, onClick, disabled }: {
+export function DropdownMenuItem({ children, onClick, disabled, className }: {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  className?: string;
 }) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
+      className={`relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${disabled ? 'opacity-50 pointer-events-none' : ''} ${className || ''}`}
     >
       {children}
     </button>

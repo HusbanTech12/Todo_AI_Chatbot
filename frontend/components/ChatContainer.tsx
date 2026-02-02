@@ -13,7 +13,7 @@ interface ChatContainerProps {
 
 const ChatContainer = ({ initialConversationId }: ChatContainerProps) => {
   const [chatSession, setChatSession] = useState<ChatSession>({
-    conversation_id: initialConversationId || null,
+    conversation_id: initialConversationId,
     messages: [],
     isLoading: false,
     error: null,
