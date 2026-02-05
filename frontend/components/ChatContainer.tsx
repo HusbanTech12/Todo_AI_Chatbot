@@ -6,14 +6,15 @@ import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import ErrorBanner from './ErrorBanner';
 import TypingIndicator from './TypingIndicator';
+import EmptyState from './EmptyState';
 
 interface ChatContainerProps {
-  initialConversationId?: number;
+  initialConversationId?: number | null;
 }
 
 const ChatContainer = ({ initialConversationId }: ChatContainerProps) => {
   const [chatSession, setChatSession] = useState<ChatSession>({
-    conversation_id: initialConversationId,
+    conversation_id: initialConversationId || undefined,
     messages: [],
     isLoading: false,
     error: null,
@@ -109,8 +110,16 @@ const ChatContainer = ({ initialConversationId }: ChatContainerProps) => {
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden flex-1 m-4">
       {chatSession.error && <ErrorBanner message={chatSession.error} />}
-      <MessageList messages={chatSession.messages} />
-      <TypingIndicator isVisible={chatSession.isLoading && chatSession.messages.length > 0} />
+      {chatSession.messages.length === 0 && !chatSession.isLoading ? (
+        <div className="flex-1">
+          <EmptyState />
+        </div>
+      ) : (
+        <>
+          <MessageList messages={chatSession.messages} />
+          <TypingIndicator isVisible={chatSession.isLoading && chatSession.messages.length > 0} />
+        </>
+      )}
       <ChatInput
         value={inputValue}
         onChange={handleInputChange}

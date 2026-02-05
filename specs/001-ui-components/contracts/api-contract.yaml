@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Todo AI Chatbot Frontend API Contract
+  version: 1.0.0
+  description: API contract for frontend-backend communication in the Todo AI Chatbot
+
+paths:
+  /api/{user_id}/chat:
+    post:
+      summary: Send a message to the AI chatbot and receive a response
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user sending the message
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The user's message to send to the AI
+                conversation_id:
+                  type: string
+                  description: Optional conversation ID to continue existing conversation
+                  nullable: true
+              required:
+                - message
+      responses:
+        '200':
+          description: Successful response from the AI
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversation_id:
+                    type: string
+                    description: The conversation ID (new or existing)
+                  response:
+                    type: string
+                    description: The AI's response message
+                  tool_calls:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Name of the MCP tool called
+                        arguments:
+                          type: object
+                          description: Arguments passed to the tool
+                    description: List of MCP tools that were invoked
+                required:
+                  - conversation_id
+                  - response
+                  - tool_calls
+        '400':
+          description: Bad request - invalid input
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique message identifier
+        content:
+          type: string
+          description: Message content
+        role:
+          type: string
+          enum: [user, assistant]
+          description: Role of the message sender
+        created_at:
+          type: string
+          format: date-time
+          description: When the message was created
+      required:
+        - id
+        - content
+        - role
+        - created_at
+
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique conversation identifier
+        user_id:
+          type: string
+          description: ID of the user who owns this conversation
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        created_at:
+          type: string
+          format: date-time
+          description: When the conversation was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the conversation was last updated
+      required:
+        - id
+        - user_id
+        - messages
+        - created_at
+        - updated_at

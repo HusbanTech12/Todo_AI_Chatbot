@@ -212,6 +212,8 @@ See `.specify/memory/constitution.md` for code quality, testing, performance, se
 ## Active Technologies
 - TypeScript with Next.js App Router + Next.js, OpenAI ChatKit, Better Auth, Tailwind CSS (004-frontend-impl)
 - None (UI-only state) (004-frontend-impl)
+- TypeScript 5.3+ with strict mode, Node.js 18+ + Next.js (App Router), React 18+, Tailwind CSS, Framer Motion, shadcn/ui, clsx, tailwind-merge (001-ui-components)
+- N/A (stateless frontend - all state managed by backend API) (001-ui-components)
 
 ## Recent Changes
 - 004-frontend-impl: Added TypeScript with Next.js App Router + Next.js, OpenAI ChatKit, Better Auth, Tailwind CSS

@@ -1,10 +1,31 @@
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { auth } from '@/lib/better-auth';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   try {
     // Extract the userId from the URL parameters
     const { userId } = await params;
+
+    // Verify that the user is authenticated and that the userId matches the authenticated user
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized: Please sign in to access chat functionality' },
+        { status: 401 }
+      );
+    }
+
+    // Ensure the authenticated user can only access their own chat
+    if (session.user.id !== userId) {
+      return NextResponse.json(
+        { error: 'Forbidden: You can only access your own chat' },
+        { status: 403 }
+      );
+    }
 
     // Get the request body
     const body = await request.json();
