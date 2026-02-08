@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/lib/utils';
 
 interface AppShellProps {
   children: React.ReactNode;
